@@ -1,23 +1,30 @@
 import React from 'react';
-import Mostrar from './pages/mostrarTutorado';
-import MostrarEstudios from './pages/estudios';
+import Buscar from './pages/buscar';
+import { useState } from 'react';
+import Mostrar from './pages/mostrarAlumno'
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import Entrevista from './pages/formularios/entrevista';
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Mostrar/>,
-  },
-  {
-    path: "/estudios/:idgrupo/:nombre",
-    element: <MostrarEstudios/>,
-  },
-]);
+
 
 function App() {
+  const [user, setUser] = useState([])
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element:         
+      !user.length > 0
+      ? <Buscar setUser={setUser} />
+      : <Mostrar user={user}/>,
+    },
+    {
+      path: "/entrevista",
+      element: <Entrevista user={user}/>,
+    }
+  ]);
   return (
     <div className='App'>
       <RouterProvider router={router} />
