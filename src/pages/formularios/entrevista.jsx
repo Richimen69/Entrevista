@@ -4,7 +4,63 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 
+const Estados= [
+    {
+        name: 'Manos y/o pies hinchados',
+        id: 'option1',
+        options: ['FRECUENTE/M', 'MUY FRECUENTE/M', 'NUNCA', 'ANTES', 'A VECES'],
+    },
+    {
+        name: 'Dolores en el vientre',
+        id: 'option2',
+        options: ['FRECUENTE/M', 'MUY FRECUENTE/M', 'NUNCA', 'ANTES', 'A VECES'],
+    },
+    {
+        name: 'Dolores de cabeza y/o vómitos',
+        id: 'option3',
+        options: ['FRECUENTE/M', 'MUY FRECUENTE/M', 'NUNCA', 'ANTES', 'A VECES'],
+    },
+    {
+        name: 'Fatiga y agotamiento',
+        id: 'option4',
+        options: ['FRECUENTE/M', 'MUY FRECUENTE/M', 'NUNCA', 'ANTES', 'A VECES'],
+    },
+    {
+        name: 'Pérdida de vista u oído</label',
+        id: 'option5',
+        options: ['FRECUENTE/M', 'MUY FRECUENTE/M', 'NUNCA', 'ANTES', 'A VECES'],
+    },
+    {
+        name: 'Dificultades para dormir',
+        id: 'option6',
+        options: ['FRECUENTE/M', 'MUY FRECUENTE/M', 'NUNCA', 'ANTES', 'A VECES'],
+    },
+    {
+        name: 'Pesadillas o terrores nocturnos a que:',
+        id: 'option7',
+        options: ['FRECUENTE/M', 'MUY FRECUENTE/M', 'NUNCA', 'ANTES', 'A VECES'],
+    },
+
+    {
+        name: 'Incontinencia (orina, heces)',
+        id: 'option8',
+        options: ['FRECUENTE/M', 'MUY FRECUENTE/M', 'NUNCA', 'ANTES', 'A VECES'],
+    },
+    {
+        name: 'Tartamudeos al explicarse',
+        id: 'option9',
+        options: ['FRECUENTE/M', 'MUY FRECUENTE/M', 'NUNCA', 'ANTES', 'A VECES'],
+    },
+    {
+        name: 'Miedos intensos ante cosas',
+        id: 'option10',
+        options: ['FRECUENTE/M', 'MUY FRECUENTE/M', 'NUNCA', 'ANTES', 'A VECES'],
+    },
+];
+
+
 const Entrevista = ({ user }) => {
+    const [selectedOptions, setSelectedOptions] = useState({});
     const { register, handleSubmit, setValue } = useForm()
     const [data, setData] = useState([]);
     useEffect(() => {
@@ -12,18 +68,32 @@ const Entrevista = ({ user }) => {
         axios.get(`${API_URLS.getAlumnos}${user}/`)
             .then(response => {
                 setData(response.data);
+                //obtiene los datos desde la api
                 const nombreCompleto = `${response.data.nombre_alumno} ${response.data.apellido_paterno} ${response.data.apellido_materno}`;
-            setValue('nombre', nombreCompleto); //obtiene el nombre desde la api
-            setValue('sexo', response.data.sexo);
+                setValue('nombre', nombreCompleto);
+                setValue('sexo', response.data.sexo);
+                setValue('carrera', response.data.carrera);
             })
             .catch(error => {
                 console.error('Error al obtener los datos:', error);
             });
 
     }, [user, setValue]);
+
+
+    //Guarda la opcion seleccionada de los ESTADOS PSICOFISIOLOGICOS
+    const handleOptionChange = (optionName, value) => {
+        setSelectedOptions({
+            ...selectedOptions,
+            [optionName]: value,
+        });
+    };
+
     
     const onSubmit = (datos) => {
         console.log(datos)
+        console.log(datos.nombre_padre)
+        console.log(datos.nombre_madre)
     }
 
     //si selecciona una opcion, habilita un input para especificar
@@ -31,21 +101,57 @@ const Entrevista = ({ user }) => {
     const [tipoTrabajo, setTipoTrabajo] = useState('');
     const [tipoTrabajoPadre, setTipoTrabajoPadre] = useState('');
     const [tipoTrabajoMadre, setTipoTrabajoMadre] = useState('');
+    const [prescripcion_medica, setPrescripcionMedica] = useState('');
     function handleChange(event) {
         setTipoVivienda(event.target.value);
     }
 
-    function handleTrabajoChange(event) {
-        setTipoTrabajo(event.target.value);
+    function handleTrabajoChange(event, parent) {
+        if (parent === 'alumno') {
+            setTipoTrabajo(event.target.value);
+        }
+        else if (parent === 'padre') {
+            setTipoTrabajoPadre(event.target.value);
+        } else if (parent === 'madre') {
+            setTipoTrabajoMadre(event.target.value);
+        }
     }
 
-    function handleTrabajoPadreChange(event) {
-        setTipoTrabajoPadre(event.target.value);
+    function handlePrescripcionMedica(event) {
+        setPrescripcionMedica(event.target.value);
     }
 
-    function handleTrabajoMadreChange(event) {
-        setTipoTrabajoMadre(event.target.value);
+    //Esta funcion permite agregar mas hermanos al formulario con un maximo de 10
+    const [inputs, setInputs] = useState(['']);
+    function handleInputChange(event, index) {
+        const { value } = event.target;
+        const newInputs = [...inputs];
+        newInputs[index] = value;
+        setInputs(newInputs);
     }
+
+    function handleAddInput() {
+        if (inputs.length < 10) {
+            setInputs([...inputs, '']);
+        }
+    }
+
+    //renderiza un input
+    const FormInput = ({ id, name, label, register, placeholder, required }) => {
+        return (
+            <div className="form-floating mb-3">
+                <input
+                    id={id}
+                    className="form-control"
+                    type="text"
+                    {...register(name, { required })}
+                    placeholder={placeholder}
+                    required={required}
+                />
+                <label htmlFor={id} className='mx-1'>{label}</label>
+            </div>
+        );
+    };
 
     return (
 
@@ -53,86 +159,159 @@ const Entrevista = ({ user }) => {
         <div className='col-8 mx-auto'>
             <form className='row g-3 p-2 ' onSubmit={handleSubmit(onSubmit)}>
 
-                <div class="form-floating mb-3 col-md-8 ">
-                    <input  className="form-control-plaintext mx-1" type="text" id='nombre'
-                            defaultValue={`${data.nombre_alumno} ${data.apellido_paterno} ${data.apellido_materno}`}
-                            {...register('nombre')}
-                            />
-                    <label for="nombre" >Nombre</label>
+                <div className="form-floating mb-3 col-md-8 ">
+                    <input className="form-control-plaintext mx-1" type="text" id='nombre'
+                        defaultValue={`${data.nombre_alumno} ${data.apellido_paterno} ${data.apellido_materno}`}
+                        {...register('nombre')}
+                        disabled />
+                    <label htmlFor="nombre" >Nombre</label>
                 </div>
 
-                <div class="form-floating mb-3 col-md-4">
-                    <input className="form-control " type="text" placeholder='carrera'  id="input" {...register('carrera')} required/>
-                    <label for="input" className='mx-1'>Carrera</label>
+                <div className="form-floating mb-3 col-md-4">
+                    <input className="form-control-plaintext  " type="text" placeholder='carrera' id="Carrera" defaultValue={data.carrera} {...register('carrera')} disabled />
+                    <label htmlFor="Carrera" className='mx-1'>Carrera</label>
                 </div>
 
-                <div class="form-floating mb-3 col-md-3">
-                    <input id="input" className="form-control" type="text" {...register('estatura')} placeholder='Estatura' required />
-                    <label for="input" className='mx-1'>Estatura</label>
+                <div className="col-md-3">
+                    <FormInput
+                        id="estatura"
+                        name="estatura"
+                        label="Estatura"
+                        register={register}
+                        placeholder="estatura"
+                        required
+                    />
                 </div>
 
-                <div class="form-floating mb-3 col-md-3">
-                    <input id="input" className="form-control " type="text" {...register('peso')} placeholder='peso' required />
-                    <label for="input" className='mx-1'>Peso</label>
+                <div className="col-md-3">
+                    <FormInput
+                        id="peso"
+                        name="peso"
+                        label="Peso"
+                        register={register}
+                        placeholder="peso"
+                        required
+                    />
                 </div>
 
-                <div class="form-floating mb-3 col-md-6">
-                    <input id="input" className="form-control " type="text" {...register('fecha')} placeholder='fecha' required />
-                    <label for="input" className='mx-1'>Fecha de Nacimiento</label>
+                <div className="col-md-6">
+                    <FormInput
+                        id="Fecha"
+                        name="Fecha"
+                        label="Fecha de Nacimiento"
+                        register={register}
+                        placeholder="Fecha"
+                        required
+                    />
                 </div>
 
-                <div class="form-floating mb-3 col-md-2">
-                    <input id="input" className="form-control-plaintext " type="text" {...register('sexo')} placeholder='sexo' value={data.sexo} required />
-                    <label for="input" className='mx-1'>Sexo</label>
+                <div className="form-floating mb-3 col-md-2">
+                    <input id="Sexo" className="form-control-plaintext " type="text" {...register('sexo')} placeholder='sexo' defaultValue={data.sexo} disabled />
+                    <label htmlFor="Sexo" className='mx-1'>Sexo</label>
                 </div>
 
-                <div class="form-floating mb-3 col-md-2">
-                    <input id="input" className="form-control " type="text" {...register('edad')} placeholder='edad' required />
-                    <label for="input" className='mx-1'>Edad</label>
+                <div className="col-md-2">
+                    <FormInput
+                        id="edad"
+                        name="edad"
+                        label="Edad Civil"
+                        register={register}
+                        placeholder="edad"
+                        required
+                    />
                 </div>
 
-                <div class="form-floating mb-3 col-md-8">
-                    <input id="input" className="form-control " type="text" {...register('estado_civil')} placeholder='Estado Civil' required />
-                    <label for="input" className='mx-1'>Estado Civil</label>
+                <div className="col-md-8">
+                    <FormInput
+                        id="estado_civil"
+                        name="estado_civil"
+                        label="Estado Civil"
+                        register={register}
+                        placeholder="estado_civil"
+                        required
+                    />
                 </div>
 
-                <div className='mb-3 col-md-3 my-2'>
-                    <label>Trabaja</label>
-                    <select className='form-select' value={tipoTrabajo}  {...register('trabaja')} onChange={handleTrabajoChange} required>
-                        <option value="No" selected>No</option>
-                        <option value="Si">Si</option>
-                    </select>
-                    {tipoTrabajo === 'Si' && (
-                        <div className='mb-3 col-md-12 my-2'>
-                            <label>Especifica:</label>
-                            <input className='form-control' type='text' {...register('tipo_trabajo')} required/>
-                        </div>
-                    )}
+                <div className="form-floating mb-3 col-md-2">
+                    <div className='mb-3'>
+                        <label>Trabaja</label>
+                        <select
+                            className='form-select'
+                            value={tipoTrabajo}
+                            onChange={(event) => handleTrabajoChange(event, 'alumno')}
+                            required
+                        >
+                            <option value="No">No</option>
+                            <option value="Si">Si</option>
+                        </select>
+
+                        {tipoTrabajo === 'Si' && (
+                            <div className='mb-3 col-md-12 my-2'>
+                                <label>Tipo de Trabajo:</label>
+                                <input
+                                    className='form-control'
+                                    type='text'
+                                    {...register('tipo_trabajo')}
+                                    required
+                                />
+                            </div>
+                        )}
+                    </div>
                 </div>
 
-                <div class="form-floating mb-3 col-md-9">
-                    <input id="input" className="form-control" type="text" {...register('lugar_nacimiento')} placeholder='lugar' required />
-                    <label for="input" className='mx-1'>Lugar de Nacimiento</label>
+                <div className="col-md-9">
+                    <FormInput
+                        id="lugar_nacimiento"
+                        name="lugar_nacimiento"
+                        label="Lugar de Nacimiento"
+                        register={register}
+                        placeholder="lugar_nacimiento"
+                        required
+                    />
                 </div>
 
-                <div class="form-floating mb-3 col-md-12">
-                    <input id="input" className="form-control" type="text" {...register('domicilio')} placeholder='domicilio' required />
-                    <label for="input" className='mx-1'>Domicilio Actual</label>
+                <div className="col-md-12">
+                    <FormInput
+                        id="domicilio"
+                        name="domicilio"
+                        label="Domicilio Actual"
+                        register={register}
+                        placeholder="domicilio"
+                        required
+                    />
                 </div>
 
-                <div class="form-floating mb-3 col-md-4">
-                    <input id="input" className="form-control" type="text" {...register('telefono')} placeholder='telefono' required />
-                    <label for="input" className='mx-1'>Teléfono</label>
+                <div className="col-md-4">
+                    <FormInput
+                        id="telefono"
+                        name="telefono"
+                        label="Teléfono"
+                        register={register}
+                        placeholder="telefono"
+                        required
+                    />
                 </div>
 
-                <div class="form-floating mb-3 col-md-2">
-                    <input id="input" className="form-control" type="text" {...register('cp')} placeholder='cp' required />
-                    <label for="input" className='mx-1'>C. P</label>
+                <div className="col-md-2">
+                    <FormInput
+                        id="cp"
+                        name="cp"
+                        label="C. P"
+                        register={register}
+                        placeholder="cp"
+                        required
+                    />
                 </div>
 
-                <div class="form-floating mb-3 col-md-6">
-                    <input id="input" className="form-control" type="email" {...register('email')} placeholder='email' required />
-                    <label for="input" className='mx-1'>E-mail</label>
+                <div className="col-md-6">
+                    <FormInput
+                        id="email"
+                        name="email"
+                        label="E-mail"
+                        register={register}
+                        placeholder="email"
+                        required
+                    />
                 </div>
 
                 <div className='mb-3 col-md-4 my-2'>
@@ -154,104 +333,335 @@ const Entrevista = ({ user }) => {
                     {tipoVivienda === 'Otros' && (
                         <div className='mb-3 col-md-8 my-2'>
                             <label>Especifica:</label>
-                            <input className='form-control' type='text' {...register('la_casa_es_1')} required/>
+                            <input className='form-control' type='text' {...register('la_casa_es_1')} required />
                         </div>
                     )}
                 </div>
 
-                <div class="form-floating mb-3 col-md-7">
-                    <input id="input" className="form-control" type="text" {...register('total_personas')} placeholder='total_personas' required />
-                    <label for="input" className='mx-1'>Numero de personas con las que vives</label>
+
+                <div className="col-md-7">
+                    <FormInput
+                        id="Numero"
+                        name="Numero"
+                        label="Numero de personas con las que vives"
+                        register={register}
+                        placeholder="Numero"
+                        required
+                    />
                 </div>
 
-                <div class="form-floating mb-3 col-md-5">
-                    <input id="input" className="form-control" type="text" {...register('parentesco')} placeholder='parentesco' required />
-                    <label for="input" className='mx-1'>Parentesco</label>
+                <div className="col-md-5">
+                    <FormInput
+                        id="Parentesco"
+                        name="Parentesco"
+                        label="Parentesco"
+                        register={register}
+                        placeholder="Parentesco"
+                        required
+                    />
+                </div>
+
+                <div className="col-md-10">
+                    <FormInput
+                        id="nombre_p"
+                        name="nombre_p"
+                        label="Nombre del Padre"
+                        register={register}
+                        placeholder="nombre_p"
+                        required
+                    />
                 </div>
 
 
-                <div class="form-floating mb-3 col-md-10">
-                    <input id="input" className="form-control" type="text" {...register('nombre_padre')} placeholder='nombre_padre' required />
-                    <label for="input" className='mx-1'>Nombre del Padre</label>
-                </div>
-
-                <div class="form-floating mb-3 col-md-2">
-                    <input id="input" className="form-control" type="text" {...register('edad_padre')} placeholder='edad_padre' required />
-                    <label for="input" className='mx-1'>Edad</label>
+                <div className="col-md-2">
+                    <FormInput
+                        id="edad_p"
+                        name="edad_p"
+                        label="Edad"
+                        register={register}
+                        placeholder="edad_padre"
+                        required
+                    />
                 </div>
 
                 <div className='mb-3 col-md-4 my-2'>
                     <label>Trabaja</label>
-                    <select className='form-select' value={tipoTrabajoPadre}  {...register('trabaja_padre')} onChange={handleTrabajoPadreChange} required>
-                        <option value="No" selected>No</option>
+                    <select
+                        className='form-select'
+                        value={tipoTrabajoPadre}
+                        onChange={(event) => handleTrabajoChange(event, 'padre')}
+                        required
+                    >
+                        <option value="No">No</option>
                         <option value="Si">Si</option>
                     </select>
-                    {tipoTrabajoPadre === 'Si' && (
-                        <div className='mb-3 col-md-12 my-2'>
-                            <label>Tipo de Trabajo:</label>
-                            <input className='form-control' type='text' {...register('tipo_trabajo_padre')} required/>
-                        </div>
-                    )}
                 </div>
 
-                <div class="form-floating mb-3 col-md-8">
-                    <input id="input" className="form-control" type="text" {...register('profesion_padre')} placeholder='profesion_padre' required />
-                    <label for="input" className='mx-1'>Profesion</label>
+                {tipoTrabajoPadre === 'Si' && (
+                    <div className='mb-3 col-md-12 my-2'>
+                        <label>Tipo de Trabajo:</label>
+                        <input
+                            className='form-control'
+                            type='text'
+                            {...register('tipo_trabajo_padre')}
+                            required
+                        />
+                    </div>
+                )}
+                <div className="form-floating mb-3 col-md-5"></div>
+
+                <FormInput
+                    id="Profesion_p"
+                    name="profesion_padre"
+                    label="Profesion"
+                    register={register}
+                    placeholder="profesion_padre"
+                    required
+                />
+                <div className="form-floating mb-3 col-md-5">
+
+                </div>
+                <FormInput
+                    id="Domicilio_p"
+                    name="domicilio_padre"
+                    label="Domicilio"
+                    register={register}
+                    placeholder="domicilio_padre"
+                    required
+                />
+                <div className="form-floating mb-3 col-md-5">
+                    <FormInput
+                        id="Telefono_m"
+                        name="telefono_padre"
+                        label="Telefono"
+                        register={register}
+                        placeholder="telefono_padre"
+                        required
+                    />
                 </div>
 
-                <div class="form-floating mb-3 col-md-12">
-                    <input id="input" className="form-control" type="text" {...register('domicilio_padre')} placeholder='domicilio_padre' required />
-                    <label for="input" className='mx-1'>Domicilio </label>
+
+                <div className="form-floating mb-3 col-md-5">
+                    <FormInput
+                        id="nombre_m"
+                        name="nombre_m"
+                        label="Nombre de la Madre"
+                        register={register}
+                        placeholder="nombre_m"
+                        required
+                    />
                 </div>
 
-                <div class="form-floating mb-3 col-md-12">
-                    <input id="input" className="form-control" type="text" {...register('telefono_padre')} placeholder='telefono_padre' required />
-                    <label for="input" className='mx-1'>Telefono </label>
-                </div>
-
-                <div class="form-floating mb-3 col-md-10">
-                    <input id="input" className="form-control" type="text" {...register('nombre_madre')} placeholder='nombre_madre' required />
-                    <label for="input" className='mx-1'>Nombre del Madre</label>
-                </div>
-
-                <div class="form-floating mb-3 col-md-2">
-                    <input id="input" className="form-control" type="text" {...register('edad_madre')} placeholder='edad_madre' required />
-                    <label for="input" className='mx-1'>Edad</label>
+                <div className="form-floating mb-3 col-md-5">
+                    <FormInput
+                        id="edad_m"
+                        name="edad_m"
+                        label="Edad"
+                        register={register}
+                        placeholder="edad_madre"
+                        required
+                    />
                 </div>
 
                 <div className='mb-3 col-md-4 my-2'>
                     <label>Trabaja</label>
-                    <select className='form-select' value={tipoTrabajoMadre}  {...register('trabaja_madre')} onChange={handleTrabajoMadreChange} required>
-                        <option value="No" selected>No</option>
+                    <select
+                        className='form-select'
+                        value={tipoTrabajoMadre}
+                        onChange={(event) => handleTrabajoChange(event, 'madre')}
+                        required
+                    >
+                        <option value="No">No</option>
                         <option value="Si">Si</option>
                     </select>
-                    {tipoTrabajoMadre === 'Si' && (
-                        <div className='mb-3 col-md-12 my-2'>
-                            <label>Tipo de Trabajo:</label>
-                            <input className='form-control' type='text' {...register('tipo_trabajo_madre')} required/>
+                </div>
+
+                {tipoTrabajoMadre === 'Si' && (
+                    <div className='mb-3 col-md-12 my-2'>
+                        <label>Tipo de Trabajo:</label>
+                        <input
+                            className='form-control'
+                            type='text'
+                            {...register('tipo_trabajo_madre')}
+                            required
+                        />
+                    </div>
+                )}
+
+                <FormInput
+                    id="Profesion_m"
+                    name="profesion_madre"
+                    label="Profesion"
+                    register={register}
+                    placeholder="profesion_madre"
+                    required
+                />
+
+                <FormInput
+                    id="Domicilio_m"
+                    name="domicilio_madre"
+                    label="Domicilio"
+                    register={register}
+                    placeholder="domicilio_madre"
+                    required
+                />
+
+                <FormInput
+                    id="Telefono_m"
+                    name="telefono_madre"
+                    label="Telefono"
+                    register={register}
+                    placeholder="telefono_madre"
+                    required
+                />
+
+                <label>Nombre de tus hermanos por edad (del mayor al menor incluyéndote tú)</label>
+                <div>
+                    {inputs.map((input, index) => (
+                        <div key={index} className="form-floating mb-3 row">
+                            <div className="form-floating mb-3 col-md-4">
+                                <input id='Nombre_h' className="form-control" type="text" placeholder='Hermano' onChange={(event) => handleInputChange(event, index)} {...register(`nombre_hermano${index + 1}`)} />
+                                <label htmlFor="Nombre_h" className='mx-2'> Nombre: </label>
+                            </div>
+
+                            <div className="form-floating mb-3 col-md-4">
+                                <input id="Fecha_h" className="form-control" type="text" placeholder='Hermano' onChange={(event) => handleInputChange(event, index)} {...register(`fecha_hermano${index + 1}`)} />
+                                <label htmlFor="Fecha_h" className='mx-2'>Fecha de Nacimiento: </label>
+                            </div>
+
+                            <div className="form-floating mb-3 col-md-2">
+                                <select id={`select-${index}`} className="form-select" onChange={(event) => handleInputChange(event, index)} {...register(`sexo_hermano${index + 1}`)}>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Femenino">Femenino</option>
+                                </select>
+                                <label htmlFor={`select-${index}`} className='mx-2'>Sexo: </label>
+                            </div>
+
+
+                            <div className="form-floating mb-3 col-md-2">
+                                <input id="Estudios_h" className="form-control" type="text" placeholder='Hermano' onChange={(event) => handleInputChange(event, index)} {...register(`estudios_hermano${index + 1}`)} />
+                                <label htmlFor="Estudios_h" className='mx-2'>Estudios: </label>
+                            </div>
+
+                        </div>
+
+                    ))}
+                    <button className="btn btn-dark mx-auto" type="button" onClick={handleAddInput}>Agregar Hermano</button>
+                </div>
+
+                <div className="form-floating mb-3 col-md-5">
+                    <FormInput
+                        id="ingresos"
+                        name="ingresos"
+                        label="A cuánto ascienden los ingresos mensuales de tu familia"
+                        register={register}
+                        placeholder="ingresos"
+                        required
+                    />
+                </div>
+
+                <div className="form-floating mb-3 col-md-7">
+                    <FormInput
+                        id="ingresos_independiente"
+                        name="ingresos_independiente"
+                        label="En caso de ser económicamente independiente a cuanto asciende tu ingreso"
+                        register={register}
+                        placeholder="ingresos_independiente"
+                        required
+                    />
+                </div>
+
+                <label>¿Cuenta con prescripción médica de alguna deficiencia sensorial o funcional que te obligue a
+                    llevar aparatos o controlar tu actividad física? </label>
+                <div className="form-floating mb-3 col-md-2">
+                    <select className="form-select" {...register(`prescripcion_medica`)} value={prescripcion_medica} onChange={handlePrescripcionMedica}>
+                        <option value="No">No</option>
+                        <option value="Si">Si</option>
+                    </select>
+                </div>
+                <div className="form-floating mb-3 col-md-10">
+                    {prescripcion_medica === 'Si' && (
+                        <div className=''>
+                            <div className="form-check form-check-inline col-md-2">
+                                <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    name="prescripcion"
+                                    id="oido"
+                                    value="Oído"
+                                    {...register("prescripcion", { required: true })}
+                                />
+                                <label className="form-check-label" htmlFor="oido">Oído</label>
+                            </div>
+
+                            <div className="form-check form-check-inline col-md-2">
+                                <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    name="prescripcion"
+                                    id="lenguaje"
+                                    value="Lenguaje"
+                                    {...register("prescripcion", { required: true })}
+                                />
+                                <label className="form-check-label" htmlFor="lenguaje">Lenguaje</label>
+                            </div>
+
+                            <div className="form-check form-check-inline col-md-2">
+                                <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    name="prescripcion"
+                                    id="otros"
+                                    value="Otros"
+                                    {...register("prescripcion", { required: true })}
+                                />
+                                <label className="form-check-label" htmlFor="otros">Otros</label>
+                            </div>
                         </div>
                     )}
                 </div>
 
-                <div class="form-floating mb-3 col-md-8">
-                    <input id="input" className="form-control" type="text" {...register('profesion_madre')} placeholder='profesion_madre' required />
-                    <label for="input" className='mx-1'>Profesion</label>
-                </div>
+                <label>ESTADO PSICOFISIOLOGICOS</label>
+                <label>INDICADORES</label>
 
-                <div class="form-floating mb-3 col-md-12">
-                    <input id="input" className="form-control" type="text" {...register('domicilio_madre')} placeholder='domicilio_madre' required />
-                    <label for="input" className='mx-1'>Domicilio </label>
-                </div>
+                {Estados.map((option, index) => (
+                    <div key={index} className='form-floating mb-3 col-md-12'>
+                        <div className='col-md-12'>
+                            <label>{option.name}</label>
+                        </div>
 
-                <div class="form-floating mb-3 col-md-12">
-                    <input id="input" className="form-control" type="text" {...register('telefono_madre')} placeholder='telefono_madre' required />
-                    <label for="input" className='mx-1'>Telefono </label>
-                </div>
+                        {option.options.map((optionLabel, optionIndex) => (
+                            <div key={optionIndex} className="form-check form-check-inline col-md-2">
+                                <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    name={option.id}
+                                    id={`${option.id}-${optionIndex}`}
+                                    value={optionLabel}
+                                    onChange={() => handleOptionChange(option.id, optionLabel)} {...register(option.id)}
+                                />
+                                <label
+                                    className="form-check-label"
+                                    htmlFor={`${option.id}-${optionIndex}`}
+                                >
+                                    {optionLabel}
+                                </label>
+                            </div>
+                        ))}
+                    </div>
+                ))}
 
-                <button className="btn btn-dark">Aceptar</button>
+
+                <div className="form-floating mb-3 col-md-12">
+                    <button className="btn col-md-3 btn-dark">Aceptar</button>
+                </div>
 
             </form>
         </div>
     )
 }
+
+
+
+
 export default Entrevista

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { API_URLS } from '../apiUrls';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import { useNavigate  } from "react-router-dom";
 
 const Mostrar = ({ user }) => {
     const [data, setData] = useState([]);
@@ -18,8 +18,14 @@ const Mostrar = ({ user }) => {
             });
 
     }, [user]);
-    return(
-        <div className='col-6 justify-content-center mx-auto'>           
+
+    const navigate = useNavigate();
+
+    function click() {
+      navigate('/entrevista');
+    }
+    return (
+        <div className='col-6 justify-content-center mx-auto'>
             <table className="table">
                 <tbody>
                     <tr>
@@ -29,7 +35,7 @@ const Mostrar = ({ user }) => {
                         <td>Numero de Control: {data.no_de_control}</td>
                     </tr>
                     <tr>
-                        <td>Periodo: {data.reticula}</td>
+                        <td>Periodo: {data.ultimo_periodo_inscrito}</td>
                     </tr>
                     <tr>
                         <td>Carrera: {data.carrera}</td>
@@ -43,12 +49,11 @@ const Mostrar = ({ user }) => {
                     </tr>
                 </thead>
                 <tbody>
-                <Link to={`/entrevista`}>
                     <tr>
-
-                        <td className="text-center align-middle">Entrevista</td>
+                        <td className="text-center align-middle" onClick={click}>
+                            Entrevista
+                        </td>
                     </tr>
-                </Link >
                 </tbody>
             </table>
         </div>
