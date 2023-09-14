@@ -3,8 +3,9 @@ import { API_URLS } from '../../apiUrls';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
+import { Document, PDFDownloadLink, View, Text, Page, StyleSheet } from "@react-pdf/renderer";
 
-const Estados= [
+const Estados = [
     {
         name: 'Manos y/o pies hinchados',
         id: 'option1',
@@ -89,7 +90,7 @@ const Entrevista = ({ user }) => {
         });
     };
 
-    
+
     const onSubmit = (datos) => {
         console.log(datos)
         console.log(datos.nombre_padre)
@@ -214,7 +215,7 @@ const Entrevista = ({ user }) => {
                     <FormInput
                         id="edad"
                         name="edad"
-                        label="Edad Civil"
+                        label="Edad"
                         register={register}
                         placeholder="edad"
                         required
@@ -587,8 +588,20 @@ const Entrevista = ({ user }) => {
                                     className="form-check-input"
                                     type="radio"
                                     name="prescripcion"
+                                    id="vista"
+                                    value="vista"
+                                    {...register("prescripcion", { required: true })}
+                                />
+                                <label className="form-check-label" htmlFor="oido">Vista</label>
+                            </div>
+
+                            <div className="form-check form-check-inline col-md-2">
+                                <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    name="prescripcion"
                                     id="oido"
-                                    value="Oído"
+                                    value="oido"
                                     {...register("prescripcion", { required: true })}
                                 />
                                 <label className="form-check-label" htmlFor="oido">Oído</label>
@@ -651,16 +664,59 @@ const Entrevista = ({ user }) => {
                     </div>
                 ))}
 
+                <div className="form-floating mb-3 col-md-12">
+                    <FormInput
+                        id="observaciones_higiene"
+                        name="observaciones_higiene"
+                        label="Observaciones de Higiene"
+                        register={register}
+                        placeholder="observaciones_higiene"
+                        required
+                    />
+                </div>
+
+                <label>ÁREAS DE INTEGRACIÓN</label>
+                <label>ÁREA FAMILIAR:</label>
+
+                <div className="form-floating mb-3 col-md-12">
+                    <FormInput
+                        id="relacion_familiar"
+                        name="relacion_familiar"
+                        label="¿Cómo es la relación con tu familia?"
+                        register={register}
+                        placeholder="relacion_familiar"
+                        required
+                    />
+                </div>
+
 
                 <div className="form-floating mb-3 col-md-12">
                     <button className="btn col-md-3 btn-dark">Aceptar</button>
                 </div>
 
             </form>
+            <PDFDownloadLink document={<GenerarPDF />} fileName='Reporte.pdf'>
+                <button className="btn col-md-3 btn-dark">PDF</button>
+            </PDFDownloadLink>
         </div>
+
+
     )
 }
+const GenerarPDF = () => {
+    return (
+        <Document>
+            <Page size="A4" orientation="landscape">
+                <View>
+                    <View>
+                        <Text>Nombre:</Text>
+                    </View>
+                </View>
+            </Page>
 
+        </Document>
+    )
+}
 
 
 
