@@ -64,6 +64,7 @@ const Entrevista = ({ user }) => {
     const [selectedOptions, setSelectedOptions] = useState({});
     const { register, handleSubmit, setValue } = useForm()
     const [data, setData] = useState([]);
+    const [datos, setDatos] = React.useState(null);
     useEffect(() => {
         // Realiza la solicitud GET a la API
         axios.get(`${API_URLS.getAlumnos}${user}/`)
@@ -95,6 +96,8 @@ const Entrevista = ({ user }) => {
         console.log(datos)
         console.log(datos.nombre_padre)
         console.log(datos.nombre_madre)
+        setDatos(datos);
+
     }
 
     //si selecciona una opcion, habilita un input para especificar
@@ -172,7 +175,6 @@ const Entrevista = ({ user }) => {
                     <input className="form-control-plaintext  " type="text" placeholder='carrera' id="Carrera" defaultValue={data.carrera} {...register('carrera')} disabled />
                     <label htmlFor="Carrera" className='mx-1'>Carrera</label>
                 </div>
-
                 <div className="col-md-3">
                     <FormInput
                         id="estatura"
@@ -238,6 +240,7 @@ const Entrevista = ({ user }) => {
                         <label>Trabaja</label>
                         <select
                             className='form-select'
+                            {...register('trabaja')}
                             value={tipoTrabajo}
                             onChange={(event) => handleTrabajoChange(event, 'alumno')}
                             required
@@ -389,6 +392,7 @@ const Entrevista = ({ user }) => {
                     <label>Trabaja</label>
                     <select
                         className='form-select'
+                        {...register('trabaja_padre')}
                         value={tipoTrabajoPadre}
                         onChange={(event) => handleTrabajoChange(event, 'padre')}
                         required
@@ -440,9 +444,7 @@ const Entrevista = ({ user }) => {
                         required
                     />
                 </div>
-
-
-                <div className="form-floating mb-3 col-md-5">
+                {/*   <div className="form-floating mb-3 col-md-5">
                     <FormInput
                         id="nombre_m"
                         name="nombre_m"
@@ -687,33 +689,179 @@ const Entrevista = ({ user }) => {
                         placeholder="relacion_familiar"
                         required
                     />
-                </div>
-
+                </div> */}
 
                 <div className="form-floating mb-3 col-md-12">
                     <button className="btn col-md-3 btn-dark">Aceptar</button>
                 </div>
 
+
             </form>
-            <PDFDownloadLink document={<GenerarPDF />} fileName='Reporte.pdf'>
-                <button className="btn col-md-3 btn-dark">PDF</button>
-            </PDFDownloadLink>
+            {datos && (
+                <PDFDownloadLink
+                    document={<GenerarPDF datos={datos} />}
+                    fileName="Reporte.pdf"
+                >
+                    Descargar PDF
+                </PDFDownloadLink>
+            )}
         </div>
 
 
     )
 }
-const GenerarPDF = () => {
+const GenerarPDF = ({ datos }) => {
+    const styles = StyleSheet.create({
+        contenido: {
+            display: 'table',
+            width: '100%',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            marginTop: '10%',
+            marginBottom: 'auto',
+        },
+        table: {
+            display: 'table',
+            width: '80%',
+            borderStyle: 'solid',
+            borderWidth: 1,
+            borderColor: 'black',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            marginTop: '30%',
+            marginBottom: 'auto',
+        },
+        tableRow: {
+            flexDirection: 'row',
+        },
+        tableCell: {
+            marginTop: -1,
+            marginRight: -1,
+            width: '100%',
+            borderStyle: 'solid',
+            padding: 4,
+            borderWidth: 1,
+            borderColor: 'black'
+        },
+        fuente: {
+            fontStyle: 'normal',
+            lineHeight: '1.5px',
+            fontSize: '12',
+            fontWeight: 'bold',
+        },
+    })
     return (
         <Document>
-            <Page size="A4" orientation="landscape">
-                <View>
-                    <View>
-                        <Text>Nombre:</Text>
+            <Page size="A4" orientation="portrait">
+                <View tyle={styles.contenido}>
+                    <View style={styles.table}>
+                        <View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>Nombre:</Text>
+                                    <Text style={{ ...styles.fuente }}>{datos.nombre}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>Estatura: {datos.estatura}</Text>
+                                    <Text style={{ ...styles.fuente }}>Carrera: {datos.carrera}</Text>
+                                </View>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>
+                                        Peso: {datos.peso}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>Fecha de Nacimiento: {datos.Fecha}</Text>
+                                    <Text style={{ ...styles.fuente }}>Sexo: {datos.sexo}</Text>
+                                </View>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>
+                                        Edad: {datos.edad}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>Estado civil:</Text>
+                                    <Text style={{ ...styles.fuente }}>{datos.estado_civil}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>Trabaja: {datos.trabaja}</Text>
+                                    {datos.trabaja === 'Si' && <Text style={{ ...styles.fuente }}>Tipo de Trabajo: {datos.tipo_trabajo}</Text>}
+                                </View>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>Lugar de Nacimiento: {datos.lugar_nacimiento}</Text>
+                                    <Text style={{ ...styles.fuente }}>Domicilio Actual: {datos.domicilio}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>Teléfono:</Text>
+                                    <Text style={{ ...styles.fuente }}>{datos.telefono}</Text>
+                                </View>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>C. P:</Text>
+                                    <Text style={{ ...styles.fuente }}>{datos.cp}</Text>
+                                </View>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>E-mail:</Text>
+                                    <Text style={{ ...styles.fuente }}>{datos.email}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>Tipo de Vivienda:</Text>
+                                    <Text style={{ ...styles.fuente }}>{datos.tipo_vivienda}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>La casa o departamento donde vives es:</Text>
+                                    {datos.la_casa_es === 'Otros' && <Text style={{ ...styles.fuente }}>{datos.la_casa_es_1}</Text>}
+                                </View>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>Numero de personas con las que vives: {datos.Numero}</Text>
+                                    <Text style={{ ...styles.fuente }}>Parentesco: {datos.Parentesco}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>Nombre del Padre: {datos.nombre_p}</Text>
+                                    <Text style={{ ...styles.fuente }}>Edad: {datos.edad_p}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>Trabaja: {datos.trabaja_padre} </Text>
+                                    {datos.trabaja_padre === 'Si' && <Text style={{ ...styles.fuente }}>Tipo de Trabajo: {datos.tipo_trabajo_padre}</Text>}
+                                </View>
+                            </View>
+                        </View>
                     </View>
                 </View>
             </Page>
-
+            <Page size="A4" orientation="portrait">
+                <View tyle={styles.contenido}>
+                    <View style={styles.table}>
+                        <View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>Profesion:</Text>
+                                    <Text style={{ ...styles.fuente }}>{datos.profesion_padre}</Text>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </Page>
         </Document>
     )
 }
