@@ -388,7 +388,7 @@ const Entrevista = ({ user }) => {
                     />
                 </div>
 
-                <div className='mb-3 col-md-4 my-2'>
+                <div className='col-md-4'>
                     <label>Trabaja</label>
                     <select
                         className='form-select'
@@ -403,7 +403,7 @@ const Entrevista = ({ user }) => {
                 </div>
 
                 {tipoTrabajoPadre === 'Si' && (
-                    <div className='mb-3 col-md-12 my-2'>
+                    <div className='col-md-8'>
                         <label>Tipo de Trabajo:</label>
                         <input
                             className='form-control'
@@ -413,28 +413,30 @@ const Entrevista = ({ user }) => {
                         />
                     </div>
                 )}
-                <div className="form-floating mb-3 col-md-5"></div>
 
-                <FormInput
-                    id="Profesion_p"
-                    name="profesion_padre"
-                    label="Profesion"
-                    register={register}
-                    placeholder="profesion_padre"
-                    required
-                />
-                <div className="form-floating mb-3 col-md-5">
-
+                <div className="col-md-12">
+                    <FormInput
+                        id="Profesion_p"
+                        name="profesion_padre"
+                        label="Profesion"
+                        register={register}
+                        placeholder="profesion_padre"
+                        required
+                    />
                 </div>
-                <FormInput
-                    id="Domicilio_p"
-                    name="domicilio_padre"
-                    label="Domicilio"
-                    register={register}
-                    placeholder="domicilio_padre"
-                    required
-                />
-                <div className="form-floating mb-3 col-md-5">
+
+                <div className="col-md-7">
+                    <FormInput
+                        id="Domicilio_p"
+                        name="domicilio_padre"
+                        label="Domicilio"
+                        register={register}
+                        placeholder="domicilio_padre"
+                        required
+                    />
+                </div >
+
+                <div className="col-md-5">
                     <FormInput
                         id="Telefono_m"
                         name="telefono_padre"
@@ -444,7 +446,7 @@ const Entrevista = ({ user }) => {
                         required
                     />
                 </div>
-                {/*   <div className="form-floating mb-3 col-md-5">
+                <div className="col-md-10">
                     <FormInput
                         id="nombre_m"
                         name="nombre_m"
@@ -455,7 +457,7 @@ const Entrevista = ({ user }) => {
                     />
                 </div>
 
-                <div className="form-floating mb-3 col-md-5">
+                <div className="col-md-2">
                     <FormInput
                         id="edad_m"
                         name="edad_m"
@@ -466,10 +468,11 @@ const Entrevista = ({ user }) => {
                     />
                 </div>
 
-                <div className='mb-3 col-md-4 my-2'>
+                <div className='col-md-4'>
                     <label>Trabaja</label>
                     <select
                         className='form-select'
+                        {...register('trabaja_madre')}
                         value={tipoTrabajoMadre}
                         onChange={(event) => handleTrabajoChange(event, 'madre')}
                         required
@@ -480,7 +483,7 @@ const Entrevista = ({ user }) => {
                 </div>
 
                 {tipoTrabajoMadre === 'Si' && (
-                    <div className='mb-3 col-md-12 my-2'>
+                    <div className='col-md-8'>
                         <label>Tipo de Trabajo:</label>
                         <input
                             className='form-control'
@@ -490,33 +493,39 @@ const Entrevista = ({ user }) => {
                         />
                     </div>
                 )}
+                <div className='col-md-12'>
+                    <FormInput
+                        id="Profesion_m"
+                        name="profesion_madre"
+                        label="Profesion"
+                        register={register}
+                        placeholder="profesion_madre"
+                        required
+                    />
+                </div>
 
-                <FormInput
-                    id="Profesion_m"
-                    name="profesion_madre"
-                    label="Profesion"
-                    register={register}
-                    placeholder="profesion_madre"
-                    required
-                />
+                <div className='col-md-7'>
+                    <FormInput
+                        id="Domicilio_m"
+                        name="domicilio_madre"
+                        label="Domicilio"
+                        register={register}
+                        placeholder="domicilio_madre"
+                        required
+                    />
+                </div>
 
-                <FormInput
-                    id="Domicilio_m"
-                    name="domicilio_madre"
-                    label="Domicilio"
-                    register={register}
-                    placeholder="domicilio_madre"
-                    required
-                />
+                <div className='col-md-5'>
+                    <FormInput
+                        id="Telefono_m"
+                        name="telefono_madre"
+                        label="Telefono"
+                        register={register}
+                        placeholder="telefono_madre"
+                        required
+                    />
+                </div>
 
-                <FormInput
-                    id="Telefono_m"
-                    name="telefono_madre"
-                    label="Telefono"
-                    register={register}
-                    placeholder="telefono_madre"
-                    required
-                />
 
                 <label>Nombre de tus hermanos por edad (del mayor al menor incluyéndote tú)</label>
                 <div>
@@ -570,6 +579,52 @@ const Entrevista = ({ user }) => {
                         label="En caso de ser económicamente independiente a cuanto asciende tu ingreso"
                         register={register}
                         placeholder="ingresos_independiente"
+                        required
+                    />
+                </div>
+
+                <label>DONDE REALIZASTE TUS ESTUDIOS DE:</label>
+
+                <div className="col-md-6">
+                    <FormInput
+                        id="Primaria"
+                        name="Primaria"
+                        label="Primaria"
+                        register={register}
+                        placeholder="Primaria"
+                        required
+                    />
+                </div>
+
+                <div className="col-md-6">
+                    <FormInput
+                        id="Secundaria"
+                        name="Secundaria"
+                        label="Secundaria"
+                        register={register}
+                        placeholder="Secundaria"
+                        required
+                    />
+                </div>
+
+                <div className="col-md-6">
+                    <FormInput
+                        id="Bachillerato"
+                        name="Bachillerato"
+                        label="Bachillerato"
+                        register={register}
+                        placeholder="Bachillerato"
+                        required
+                    />
+                </div>
+
+                <div className="col-md-6">
+                    <FormInput
+                        id="Estudios_Superiores"
+                        name="Estudios_Superiores"
+                        label="Estudios Superiores"
+                        register={register}
+                        placeholder="Estudios_Superiores"
                         required
                     />
                 </div>
@@ -635,7 +690,7 @@ const Entrevista = ({ user }) => {
                         </div>
                     )}
                 </div>
-
+                {/*         
                 <label>ESTADO PSICOFISIOLOGICOS</label>
                 <label>INDICADORES</label>
 
@@ -711,6 +766,31 @@ const Entrevista = ({ user }) => {
     )
 }
 const GenerarPDF = ({ datos }) => {
+    const Hermanos = () => {
+        const rows = [];
+        for (let i = 1; i <= 10; i++) {
+            rows.push(
+                <View style={styles.tableRow} key={i}>
+                    <View style={{ ...styles.tableCell, width: '5.2%' }}>
+                        <Text style={{ ...styles.fuente, textAlign: 'center' }}>{i}</Text>
+                    </View>
+                    <View style={{ ...styles.tableCell, width: '37%' }}>
+                        <Text style={{ ...styles.fuente, textAlign: 'center' }}>{datos['nombre_hermano' + i]}</Text>
+                    </View>
+                    <View style={{ ...styles.tableCell, width: '20%' }}>
+                        <Text style={{ ...styles.fuente, textAlign: 'center' }}>{datos['fecha_hermano' + i]}</Text>
+                    </View>
+                    <View style={{ ...styles.tableCell, width: '20%' }}>
+                        <Text style={{ ...styles.fuente, textAlign: 'center' }}>{datos['sexo_hermano' + i]}</Text>
+                    </View>
+                    <View style={{ ...styles.tableCell, width: '20%' }}>
+                        <Text style={{ ...styles.fuente, textAlign: 'center' }}>{datos['estudios_hermano' + i]}</Text>
+                    </View>
+                </View>
+            );
+        }
+        return rows;
+    };
     const styles = StyleSheet.create({
         contenido: {
             display: 'table',
@@ -728,7 +808,7 @@ const GenerarPDF = ({ datos }) => {
             borderColor: 'black',
             marginLeft: 'auto',
             marginRight: 'auto',
-            marginTop: '30%',
+
             marginBottom: 'auto',
         },
         tableRow: {
@@ -746,15 +826,16 @@ const GenerarPDF = ({ datos }) => {
         fuente: {
             fontStyle: 'normal',
             lineHeight: '1.5px',
-            fontSize: '12',
+            fontSize: '11',
             fontWeight: 'bold',
         },
+
     })
     return (
         <Document>
             <Page size="A4" orientation="portrait">
                 <View tyle={styles.contenido}>
-                    <View style={styles.table}>
+                    <View style={{ ...styles.table, marginTop: '30%' }}>
                         <View>
                             <View style={styles.tableRow}>
                                 <View style={{ ...styles.tableCell }}>
@@ -850,13 +931,83 @@ const GenerarPDF = ({ datos }) => {
             </Page>
             <Page size="A4" orientation="portrait">
                 <View tyle={styles.contenido}>
-                    <View style={styles.table}>
+                    <View style={{ ...styles.table, marginTop: '10%' }}>
                         <View>
                             <View style={styles.tableRow}>
                                 <View style={{ ...styles.tableCell }}>
                                     <Text style={{ ...styles.fuente }}>Profesion:</Text>
                                     <Text style={{ ...styles.fuente }}>{datos.profesion_padre}</Text>
                                 </View>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>Domicilio: {datos.domicilio_padre}</Text>
+                                    <Text style={{ ...styles.fuente }}>Telefono: {datos.telefono_padre}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>Nombre de la Madre: {datos.nombre_m}</Text>
+                                    <Text style={{ ...styles.fuente }}>Edad: {datos.edad_m}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>Trabaja: {datos.trabaja_madre} </Text>
+                                    {datos.trabaja_madre === 'Si' && <Text style={{ ...styles.fuente }}>Tipo de Trabajo: {datos.tipo_trabajo_madre}</Text>}
+                                </View>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>Profesion:</Text>
+                                    <Text style={{ ...styles.fuente }}>{datos.profesion_madre}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell }}>
+                                    <Text style={{ ...styles.fuente }}>Domicilio: {datos.domicilio_madre}</Text>
+                                    <Text style={{ ...styles.fuente }}>Telefono: {datos.telefono_madre}</Text>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                    <Text style={{ ...styles.fuente, textAlign: 'center', marginTop: '4%' }}>Nombre de tus hermanos por edad (del mayor al menor incluyéndote tú)</Text>
+                    <View style={{ ...styles.table }}>
+                        <View>
+                            <View style={styles.tableRow}>
+                                <View style={{ ...styles.tableCell, width: '42%' }}>
+                                    <Text style={{ ...styles.fuente, textAlign: 'center' }}>Nombre</Text>
+                                </View>
+                                <View style={{ ...styles.tableCell, width: '20%' }}>
+                                    <Text style={{ ...styles.fuente, textAlign: 'center' }}>Fecha de Nacimiento</Text>
+                                </View>
+                                <View style={{ ...styles.tableCell, width: '20%' }}>
+                                    <Text style={{ ...styles.fuente, textAlign: 'center' }}>Sexo</Text>
+                                </View>
+                                <View style={{ ...styles.tableCell, width: '20%' }}>
+                                    <Text style={{ ...styles.fuente, textAlign: 'center' }}>Estudios</Text>
+                                </View>
+                            </View>
+                        </View>
+                        <Hermanos />
+                    </View>
+                    <View style={{ ...styles.table, marginTop: '4%' }}>
+                        <View>
+                            <View style={styles.tableCell}>
+                                <Text style={styles.fuente}>Primaria: {datos.Primaria}</Text>
+                            </View>
+                            <View style={styles.tableCell}>
+                                <Text style={styles.fuente}>Secundaria: {datos.Secundaria}</Text>
+                            </View>
+                            <View style={styles.tableCell}>
+                                <Text style={styles.fuente}>Bachillerato: {datos.Bachillerato}</Text>
+                            </View>
+                            <View style={styles.tableCell}>
+                                <Text style={styles.fuente}>Estudios Superiores: {datos.Estudios_Superiores}</Text>
+                            </View>
+                            <View style={styles.tableCell}>
+                                <Text style={styles.fuente}>¿Cuenta con prescripción médica de alguna deficiencia sensorial o funcional que te obligue a llevar aparatos o controlar tu actividad física?: {datos.prescripcion_medica} </Text>
+                                {datos.prescripcion_medica === 'Si' && <Text style={styles.fuente}>¿Indica cuáles?: {datos.prescripcion}</Text>}
                             </View>
                         </View>
                     </View>
