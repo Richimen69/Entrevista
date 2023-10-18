@@ -51,7 +51,7 @@ const Estados = [
         name: "Miedos intensos ante cosas",
         id: "option9",
         options: ["FRECUENTE/M", "MUY FRECUENTE/M", "NUNCA", "ANTES", "A VECES"],
-        
+
     },
 ];
 const Caracteristica_personales = [
@@ -63,45 +63,54 @@ const Caracteristica_personales = [
     {
         name: "Tímido/a",
         id: "car1",
-        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],    },
+        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],
+    },
     {
         name: "Alegre",
         id: "car2",
-        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],        
+        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],
     },
     {
         name: "Agresivo/a",
         id: "car3",
-        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],    },
+        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],
+    },
     {
         name: "Abierto/a a las ideas de otros",
         id: "car4",
-        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],    },
+        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],
+    },
     {
         name: "Reflexivo/a",
         id: "car5",
-        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],    },
+        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],
+    },
     {
         name: "Constante",
         id: "car6",
-        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],    },
+        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],
+    },
 
     {
         name: "Optimista",
         id: "car7",
-        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],    },
+        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],
+    },
     {
         name: "Impulsivo/a",
         id: "car8",
-        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],    },
+        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],
+    },
     {
         name: "Silencioso/a",
         id: "car9",
-        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],    },
+        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],
+    },
     {
         name: "Generoso/a",
         id: "car10",
-        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],    },
+        options: ["NO", "POCO", "FRECUENTE/M.", "MUCHO"],
+    },
     {
         name: "Inquieto/a",
         id: "car11",
@@ -193,4 +202,20 @@ const FormInput = ({ id, label, register, required }) => {
     );
 };
 
-export { Estados, FormInput, Caracteristica_personales };
+const Input = ({ id, label, register, required }) => {
+    return (
+        <div className="mb-3">
+            <label className="mx-1">
+                {label}
+            </label>
+            <textarea
+                className="form-control"
+                {...register(id, { required })}
+                required={required}
+                rows='2'
+            />
+        </div>
+    );
+};
+
+export { Estados, FormInput, Caracteristica_personales, Input };

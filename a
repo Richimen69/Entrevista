@@ -1,0 +1,66 @@
+[33mcommit 6596e307ea728dcab9626053af1fdc17663d3d77[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Ricardo <xdricardo63@gmail.com>
+Date:   Tue Sep 26 14:09:22 2023 -0600
+
+    update
+
+[33mcommit 2152ddadbc4205a2d9960301380c9412f7075b49[m
+Author: Ricardo <xdricardo63@gmail.com>
+Date:   Tue Sep 26 01:49:38 2023 -0600
+
+    PDF-update
+
+[33mcommit 4fb927f0a9b10f8991bab2979d34dfb8d5af174a[m
+Author: Ricardo <xdricardo63@gmail.com>
+Date:   Wed Sep 20 00:34:49 2023 -0600
+
+    PDF-update
+
+[33mcommit fc9b3d87f37b0aa030b93666463be25d290208b5[m
+Author: Ricardo <xdricardo63@gmail.com>
+Date:   Tue Sep 19 00:51:46 2023 -0600
+
+    PDF
+
+[33mcommit 0a1765e6112854e1bd2f883325bda40cb6fdd848[m
+Author: Ricardo <xdricardo63@gmail.com>
+Date:   Thu Sep 14 01:29:38 2023 -0600
+
+    update
+
+[33mcommit fed4a058c993dbe3495de72afbcbd2fb7a1fc881[m
+Author: Ricardo <xdricardo63@gmail.com>
+Date:   Fri Sep 8 01:15:39 2023 -0600
+
+    update
+
+[33mcommit 6f3c538d0728eb9a1e81678b0f288f42ac85456b[m
+Merge: 5d0c6b1 caf7598
+Author: Ricardo <xdricardo63@gmail.com>
+Date:   Sat Aug 26 18:41:57 2023 -0600
+
+    Merge branch 'main' of https://github.com/Richimen69/Entrevista
+
+[33mcommit 5d0c6b1942e92819aaa2e0f7262a45237edf8f6c[m
+Author: Ricardo <xdricardo63@gmail.com>
+Date:   Sat Aug 26 18:38:36 2023 -0600
+
+    update
+
+[33mcommit caf7598482f5a8cc3202673a5422265fdb36a0d5[m
+Author: Richimen69 <72525922+Richimen69@users.noreply.github.com>
+Date:   Mon Aug 21 00:54:50 2023 -0600
+
+    Update README.md
+
+[33mcommit 401c63fab8eb7d484d78a40884e19929edc419c6[m
+Author: Ricardo <xdricardo63@gmail.com>
+Date:   Mon Aug 21 00:53:11 2023 -0600
+
+    first commit
+
+[33mcommit f0b26a7c6d07123ed20e32e6e0f5d7f104c7c694[m
+Author: Ricardo <xdricardo63@gmail.com>
+Date:   Sat Aug 12 14:42:54 2023 -0600
+
+    Initialize project using Create React App

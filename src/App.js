@@ -7,6 +7,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Entrevista from './pages/formularios/entrevista';
+import AnalisisFoda from './pages/formularios/AnalisisFoda';
 
 
 
@@ -23,6 +24,10 @@ function App() {
     {
       path: "/entrevista",
       element: <Entrevista user={user}/>,
+    },
+    {
+      path: "/analisisFoda",
+      element: <AnalisisFoda/>,
     }
   ]);
   return (

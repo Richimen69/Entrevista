@@ -21,8 +21,8 @@ const Mostrar = ({ user }) => {
 
     const navigate = useNavigate();
 
-    function click() {
-      navigate('/entrevista');
+    function click(ruta) {
+      navigate(ruta);
     }
     return (
         <div className='col-6 justify-content-center mx-auto'>
@@ -50,8 +50,18 @@ const Mostrar = ({ user }) => {
                 </thead>
                 <tbody>
                     <tr>
-                        <td className="text-center align-middle" onClick={click}>
+                        <td className="text-center align-middle" onClick={() => click('/entrevista')}>
                             Entrevista
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="text-center align-middle" onClick={() => click('/analisisFoda')}>
+                            Análisis Foda
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="text-center align-middle">
+                            Encuesta sobre las habilidades de estudio
                         </td>
                     </tr>
                 </tbody>
