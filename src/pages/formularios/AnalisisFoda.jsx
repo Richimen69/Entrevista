@@ -1,15 +1,19 @@
-import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { useForm } from "react-hook-form";
-import { Input } from "./Elementos";
+import React from "react"
+import "bootstrap/dist/css/bootstrap.min.css"
+import { useForm } from "react-hook-form"
+import { Input } from "./Elementos"
+import AnalisisFodaPDF from "./AnalisisFodaPDF"
+import {
+    PDFDownloadLink,
+} from "@react-pdf/renderer"
 
 const AnalisisFoda = () => {
-    const { register, handleSubmit } = useForm();
-    const [datos, setDatos] = React.useState(null);
+    const { register, handleSubmit } = useForm()
+    const [datos, setDatos] = React.useState(null)
 
     const onSubmit = (datos) => {
-        console.log(datos);
-        setDatos(datos);
+        console.log(datos)
+        setDatos(datos)
     };
     return (
         <div className="col-10 mx-auto">
@@ -225,6 +229,14 @@ const AnalisisFoda = () => {
                     <button className="btn col-md-3 btn-dark">Aceptar</button>
                 </div>
             </form>
+            {datos && (
+                <PDFDownloadLink
+                    document={<AnalisisFodaPDF datos={datos} />}
+                    fileName="Reporte.pdf"
+                >
+                    Descargar PDF
+                </PDFDownloadLink>
+            )}
         </div>
 
     )

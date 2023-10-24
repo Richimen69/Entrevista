@@ -1,34 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"
 import { API_URLS } from "../../apiUrls";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { useForm } from "react-hook-form";
+import "bootstrap/dist/css/bootstrap.min.css"
+import { useForm } from "react-hook-form"
 import axios from "axios";
-import GenerarPDF from "./EntrevistaPDF";
+import GenerarPDF from "./EntrevistaPDF"
 import { Estados, FormInput, Caracteristica_personales } from "./Elementos"
 import {
     PDFDownloadLink,
-} from "@react-pdf/renderer";
+} from "@react-pdf/renderer"
 
 
 const Entrevista = ({ user }) => {
-    const [selectedOptions, setSelectedOptions] = useState({});
-    const { register, handleSubmit, setValue } = useForm();
-    const [data, setData] = useState([]);
-    const [datos, setDatos] = React.useState(null);
+    const [selectedOptions, setSelectedOptions] = useState({})
+    const { register, handleSubmit, setValue } = useForm()
+    const [data, setData] = useState([])
+    const [datos, setDatos] = React.useState(null)
     useEffect(() => {
         // Realiza la solicitud GET a la API
         axios
             .get(`${API_URLS.getAlumnos}${user}/`)
             .then((response) => {
-                setData(response.data);
+                setData(response.data)
                 //obtiene los datos desde la api
-                const nombreCompleto = `${response.data.nombre_alumno} ${response.data.apellido_paterno} ${response.data.apellido_materno}`;
-                setValue("nombre", nombreCompleto);
-                setValue("sexo", response.data.sexo);
-                setValue("carrera", response.data.carrera);
+                const nombreCompleto = `${response.data.nombre_alumno} ${response.data.apellido_paterno} ${response.data.apellido_materno}`
+                setValue("nombre", nombreCompleto)
+                setValue("sexo", response.data.sexo)
+                setValue("carrera", response.data.carrera)
             })
             .catch((error) => {
-                console.error("Error al obtener los datos:", error);
+                console.error("Error al obtener los datos:", error)
             });
     }, [user, setValue]);
 
@@ -42,48 +42,48 @@ const Entrevista = ({ user }) => {
 
     //Boton Aceptar
     const onSubmit = (datos) => {
-        console.log(datos);
-        setDatos(datos);
-        const autopercepcion = Caracteristica_personales.map((Caracteristica_personales) => Caracteristica_personales.name);  
+        console.log(datos)
+        setDatos(datos)
+        const autopercepcion = Caracteristica_personales.map((Caracteristica_personales) => Caracteristica_personales.name) 
         console.log(autopercepcion)
     };
 
     //si selecciona una opcion, habilita un input para especificar
-    const [tipoVivienda, setTipoVivienda] = useState("");
-    const [tipoTrabajo, setTipoTrabajo] = useState("");
-    const [tipoTrabajoPadre, setTipoTrabajoPadre] = useState("");
-    const [tipoTrabajoMadre, setTipoTrabajoMadre] = useState("");
-    const [prescripcion_medica, setPrescripcionMedica] = useState("");
+    const [tipoVivienda, setTipoVivienda] = useState("")
+    const [tipoTrabajo, setTipoTrabajo] = useState("")
+    const [tipoTrabajoPadre, setTipoTrabajoPadre] = useState("")
+    const [tipoTrabajoMadre, setTipoTrabajoMadre] = useState("")
+    const [prescripcion_medica, setPrescripcionMedica] = useState("")
     function handleChange(event) {
-        setTipoVivienda(event.target.value);
+        setTipoVivienda(event.target.value)
     }
 
     function handleTrabajoChange(event, parent) {
         if (parent === "alumno") {
-            setTipoTrabajo(event.target.value);
+            setTipoTrabajo(event.target.value)
         } else if (parent === "padre") {
-            setTipoTrabajoPadre(event.target.value);
+            setTipoTrabajoPadre(event.target.value)
         } else if (parent === "madre") {
-            setTipoTrabajoMadre(event.target.value);
+            setTipoTrabajoMadre(event.target.value)
         }
     }
 
     function handlePrescripcionMedica(event) {
-        setPrescripcionMedica(event.target.value);
+        setPrescripcionMedica(event.target.value)
     }
 
     //Esta funcion permite agregar mas hermanos al formulario con un maximo de 10
-    const [inputs, setInputs] = useState([""]);
+    const [inputs, setInputs] = useState([""])
     function handleInputChange(event, index) {
-        const { value } = event.target;
-        const newInputs = [...inputs];
-        newInputs[index] = value;
-        setInputs(newInputs);
+        const { value } = event.target
+        const newInputs = [...inputs]
+        newInputs[index] = value
+        setInputs(newInputs)
     }
 
     function handleAddInput() {
         if (inputs.length < 10) {
-            setInputs([...inputs, ""]);
+            setInputs([...inputs, ""])
         }
     }
 
@@ -1296,4 +1296,4 @@ const Entrevista = ({ user }) => {
 };
 //Funcion para generar el PDF
 
-export default Entrevista;
+export default Entrevista

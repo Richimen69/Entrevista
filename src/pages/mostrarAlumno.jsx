@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { API_URLS } from '../apiUrls';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
-import { useNavigate  } from "react-router-dom";
+import React, { useState, useEffect } from 'react'
+import { API_URLS } from '../apiUrls'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import axios from 'axios'
+import { useNavigate  } from "react-router-dom"
 
 const Mostrar = ({ user }) => {
     const [data, setData] = useState([]);
@@ -10,11 +10,11 @@ const Mostrar = ({ user }) => {
         // Realiza la solicitud GET a la API
         axios.get(`${API_URLS.getAlumnos}${user}/`)
             .then(response => {
-                setData(response.data);
+                setData(response.data)
 
             })
             .catch(error => {
-                console.error('Error al obtener los datos:', error);
+                console.error('Error al obtener los datos:', error)
             });
 
     }, [user]);
@@ -22,7 +22,7 @@ const Mostrar = ({ user }) => {
     const navigate = useNavigate();
 
     function click(ruta) {
-      navigate(ruta);
+      navigate(ruta)
     }
     return (
         <div className='col-6 justify-content-center mx-auto'>
@@ -55,13 +55,18 @@ const Mostrar = ({ user }) => {
                         </td>
                     </tr>
                     <tr>
-                        <td className="text-center align-middle" onClick={() => click('/analisisFoda')}>
+                        <td className="text-center align-middle" onClick={() => click('/analisis_foda')}>
                             Análisis Foda
                         </td>
                     </tr>
                     <tr>
-                        <td className="text-center align-middle">
+                        <td className="text-center align-middle" onClick={() => click('/encuesta_habilidades')}>
                             Encuesta sobre las habilidades de estudio
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="text-center align-middle" onClick={() => click('/inventario_estilos')}>
+                        Inventario sobre estilos de aprendizaje
                         </td>
                     </tr>
                 </tbody>

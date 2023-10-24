@@ -155,7 +155,7 @@ const GenerarPDF = ({ datos }) => {
   return (
     <Document>
       <Page size="A4" orientation="portrait">
-        <View tyle={styles.contenido}>
+        <View style={styles.contenido}>
           <View style={{ ...styles.table, marginTop: "30%" }}>
             <View>
               <View style={styles.tableRow}>
